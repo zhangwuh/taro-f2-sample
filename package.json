@@ -5,7 +5,7 @@
   "description": "demo",
   "templateInfo": {
     "name": "default",
-    "typescript": false,
+    "typescript": true,
     "css": "sass"
   },
   "scripts": {
@@ -35,14 +35,14 @@
   ],
   "author": "",
   "dependencies": {
-    "@antv/f2": "^3.7.7",
     "@babel/runtime": "^7.7.7",
     "@tarojs/components": "3.0.6",
     "@tarojs/react": "3.0.6",
     "@tarojs/runtime": "3.0.6",
     "@tarojs/taro": "3.0.6",
     "react": "^16.10.0",
-    "react-dom": "^16.10.0"
+    "react-dom": "^16.10.0",
+    "wolfy87-eventemitter": "^5.2.5"
   },
   "devDependencies": {
     "@types/webpack-env": "^1.13.6",
@@ -56,6 +56,9 @@
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-react-hooks": "^1.6.1",
-    "stylelint": "9.3.0"
+    "stylelint": "9.3.0",
+    "@typescript-eslint/parser": "^2.x",
+    "@typescript-eslint/eslint-plugin": "^2.x",
+    "typescript": "^4.0.2"
   }
 }

@@ -3,7 +3,6 @@ import { View, Text } from '@tarojs/components'
 import './index.scss'
 import F2Chart from '../../f2/f2-chart'
 
-
 export default class Index extends Component {
 
   componentWillMount() { }
@@ -69,8 +68,6 @@ export default class Index extends Component {
       shapes[obj.year] = text; // 缓存该 shape, 便于后续查找
     });
 
-    let lastTextShape; // 上一个被选中的 text
-    // 配置柱状图点击交互
     chart.interaction('interval-select', {
       selectAxisStyle: {
         fill: '#000',
@@ -82,90 +79,220 @@ export default class Index extends Component {
         sales: 38
       },
       onEnd: function onEnd(ev) {
-        const data1 = ev.data,
-          selected = ev.selected;
-
-        lastTextShape && lastTextShape.attr({
-          fill: '#808080',
-          fontWeight: 'normal'
-        });
-        if (selected) {
-          const textShape = shapes[data1.year];
-          textShape.attr({
-            fill: '#000',
-            fontWeight: 'bold'
-          });
-          lastTextShape = textShape;
-        }
-        canvas.draw();
-      }
+        console.info(ev.data) //获取点击data
+      },
     });
     return chart
   }
 
   pieChart = (chart) => {
-    const data = [{
-      const: 'const',
-      type: '交通出行',
-      money: 51.39
+
+    var data = [{
+      name: '芳华',
+      percent: 0.4,
+      a: '1'
     }, {
-      const: 'const',
-      type: '饮食',
-      money: 356.68
+      name: '妖猫传',
+      percent: 0.2,
+      a: '1'
     }, {
-      const: 'const',
-      type: '生活日用',
-      money: 20.00
+      name: '机器之血',
+      percent: 0.18,
+      a: '1'
     }, {
-      const: 'const',
-      type: '住房缴费',
-      money: 116.53
+      name: '心理罪',
+      percent: 0.15,
+      a: '1'
+    }, {
+      name: '寻梦环游记',
+      percent: 0.05,
+      a: '1'
+    }, {
+      name: '其他',
+      percent: 0.12,
+      a: '1'
     }];
-    chart.source(data);
+    chart.source(data, {
+      percent: {
+        formatter: function formatter(val) {
+          return val * 100 + '%';
+        }
+      }
+    });
+    chart.legend({
+      position: 'right',
+      marker: 'square'
+    });
+    chart.tooltip(false);
     chart.coord('polar', {
       transposed: true,
-      radius: 0.9,
-      innerRadius: 0.5
+      radius: 0.85,
+      innerRadius: 0.618
     });
     chart.axis(false);
-    chart.legend(false);
-    chart.tooltip(false);
-    chart.interval()
-      .position('const*money')
-      .adjust('stack')
-      .color('type', [ '#1890FF', '#13C2C2', '#2FC25B', '#FACC14' ]);
-    chart.pieLabel({
-      sidePadding: 30,
-      activeShape: true,
-      label1: function label1(data1) {
-        return {
-          text: '￥' + data1.money,
-          fill: '#343434',
-          fontWeight: 'bold'
-        };
-      },
-      label2: function label2(data1) {
-        return {
-          text: data1.type,
-          fill: '#999'
-        };
-      },
-      onClick: this.clk,
+    chart.interval().position('a*percent').color('name', ['#1890FF', '#13C2C2', '#2FC25B', '#FACC14', '#F04864', '#8543E0']).adjust('stack').style({
+      lineWidth: 1,
+      stroke: '#fff',
+      lineJoin: 'round',
+      lineCap: 'round'
     });
+  
     chart.render();
-    
+  
+    chart.interaction('pie-select', {
+      animate: {
+        duration: 300,
+        easing: 'backOut'
+      },
+      defaultSelected: {
+        name: '机器之血',
+        percent: 0.18,
+        a: '1'
+      },
+      onEnd: function onEnd(ev) {
+         console.info(ev.data) //获取点击data
+      }
+    });
   }
 
-  clk = (e) => {
-    console.info(`click colunm chart:${e[0].year} ${e[0].sales}`)
+  radarChart = (chart) => {
+
+    const data = [{
+      item: 'Design',
+      user: '用户 A',
+      score: 70
+    }, {
+      item: 'Design',
+      user: '用户 B',
+      score: 30
+    }, {
+      item: 'Development',
+      user: '用户 A',
+      score: 60
+    }, {
+      item: 'Development',
+      user: '用户 B',
+      score: 70
+    }, {
+      item: 'Marketing',
+      user: '用户 A',
+      score: 50
+    }, {
+      item: 'Marketing',
+      user: '用户 B',
+      score: 60
+    }, {
+      item: 'Users',
+      user: '用户 A',
+      score: 40
+    }, {
+      item: 'Users',
+      user: '用户 B',
+      score: 50
+    }, {
+      item: 'Test',
+      user: '用户 A',
+      score: 60
+    }, {
+      item: 'Test',
+      user: '用户 B',
+      score: 70
+    }, {
+      item: 'Language',
+      user: '用户 A',
+      score: 70
+    }, {
+      item: 'Language',
+      user: '用户 B',
+      score: 50
+    }, {
+      item: 'Technology',
+      user: '用户 A',
+      score: 70
+    }, {
+      item: 'Technology',
+      user: '用户 B',
+      score: 40
+    }, {
+      item: 'Support',
+      user: '用户 A',
+      score: 60
+    }, {
+      item: 'Support',
+      user: '用户 B',
+      score: 40
+    }];
+
+
+    chart.coord('polar');
+    chart.source(data, {
+      score: {
+        min: 0,
+        max: 120,
+        nice: false,
+        tickCount: 4
+      }
+    });
+    chart.tooltip({
+      custom: true, // 自定义 tooltip 内容框
+      onChange: function onChange(obj) {
+        const legend = chart.get('legendController').legends.top[0];
+        const tooltipItems = obj.items;
+        const legendItems = legend.items;
+        const map = {};
+        legendItems.forEach(function (item) {
+          map[item.name] = _.clone(item);
+        });
+        tooltipItems.forEach(function (item) {
+          const name = item.name;
+          const value = item.value;
+          if (map[name]) {
+            map[name].value = value;
+          }
+        });
+        legend.setItems(_.values(map));
+      },
+      onHide: function onHide() {
+        const legend = chart.get('legendController').legends.top[0];
+        legend.setItems(chart.getLegendItems().country);
+      }
+    });
+    chart.axis('score', {
+      label: function label(text, index, total) {
+        if (index === total - 1) {
+          return null;
+        }
+        return {
+          top: true
+        };
+      },
+      grid: {
+        lineDash: null,
+        type: 'arc' // 弧线网格
+      }
+    });
+    chart.axis('item', {
+      grid: {
+        lineDash: null
+      }
+    });
+    chart.line().position('item*score').color('user');
+    chart.point().position('item*score').color('user')
+      .style({
+        stroke: '#fff',
+        lineWidth: 1
+      });
+    chart.render();
+
   }
 
   render() {
     return (
       <View className='index'>
         <Text>f2 on taro</Text>
-        <F2Chart  chartId='col-chart' onClick={this.clk}  init={this.colChart} className='f2-chart' />
-        <F2Chart  init={this.pieChart} />
+        <F2Chart chartId='col-chart' init={this.colChart} className='f2-chart' />
+        <F2Chart init={this.pieChart} className='f2-chart' />
+        <F2Chart init={this.radarChart} />
       </View>
     )
   }

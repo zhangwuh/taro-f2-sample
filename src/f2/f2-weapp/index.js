@@ -44,7 +44,6 @@ Component({
         if (chart) {
           this.chart = chart;
           this.canvasEl = chart.get('el');
-          this.canvas = this.chart.get('canvas')
         }
       });
   },
