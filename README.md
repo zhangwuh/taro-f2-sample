@@ -1,7 +1,7 @@
 # taro-f2-sample
 taro集成f2图表的示例
 
-支持h5 微信小程序
+基于taro3, f2 3.7.7, 支持h5 微信小程序
 
 F2图表具体使用方法请参考: https://github.com/antvis/f2
 
